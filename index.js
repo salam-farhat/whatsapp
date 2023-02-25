@@ -1,11 +1,11 @@
- const express = require("express");
+const express = require("express");
   const app = express();
   const axios = require("axios");
   const cheerio = require("cheerio");
 
   const formUrl = "https://forms.gle/j6BzcWNmqaHpmmvZ6";
 
- app.get("/generate", (req, res) => {
+app.get("/generate", (req, res) => {
     axios
       .get(formUrl)
       .then((response) => {
