@@ -1,4 +1,5 @@
-const express = require("express");
+  require("dotenv").config();
+  const express = require("express");
   const app = express();
   const axios = require("axios");
   const cheerio = require("cheerio");
@@ -29,7 +30,7 @@ app.get("/generate", (req, res) => {
       });
   });
 
-  const port = 3005;
+  const port = process.env.PORT | 3005;
   app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
