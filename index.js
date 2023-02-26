@@ -36,6 +36,7 @@ app.post("/", (req, res) => {
   const { body } = req;
 
   let message;
+  console.log(body);
 
   if (body.NumMedia > 0) {
     message = new MessagingResponse().message("Thanks for the image! Here's one for you!");
