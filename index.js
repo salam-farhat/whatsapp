@@ -4,12 +4,15 @@ const bodyParser = require('body-parser')
 const app = express();
 const axios = require("axios");
 const cheerio = require("cheerio");
+const { MessagingResponse } = require('twilio').twiml;
 
 // create application/json parser
 var jsonParser = bodyParser.json()
  
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+app.use(urlencodedParser)
 
 app.get("/generate/:formUrl", (req, res) => {
   axios
@@ -34,14 +37,8 @@ app.get("/generate/:formUrl", (req, res) => {
     });
 });
 
-const { MessagingResponse } = require('twilio').twiml;
-
-const goodBoyUrl = 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?'
-  + 'ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
-
-app.post("/", jsonParser, async (req, res) => {
-  const { body } = req;
-  console.log(body);
+app.post("/", async (req, res) => {
+  console.log(req.body);
 
   let message;
 
@@ -49,8 +46,7 @@ app.post("/", jsonParser, async (req, res) => {
 
   res.set('Content-Type', 'text/xml');
   res.send(message.toString()).status(200);
-  console.log("Twilio message");
-  console.log(message.toString());
+  //console.log(message.toString());
 });
 
 const port = process.env.PORT || 3005;
