@@ -1,18 +1,21 @@
-  {
-    "name": "salam-whatsapp",
-    "version": "1.0.0",
-    "description": "Returns title and description from a google form",
-    "main": "index.js",
-    "engines": {
-      "node": "18.x"
-    },
-    "dependencies": {
-      "axios": "^1.3.4",
-      "cheerio": "^1.0.0-rc.12",
-      "express": "^4.18.2",
-      "dotenv": "^16.0.3",
-    },
-    "scripts": {
-      "start": "node index.js"
-    }
+{
+  "name": "salam-whatsapp",
+  "version": "1.0.0",
+  "description": "Returns title and description from a google form",
+  "main": "index.js",
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "axios": "^1.3.4",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "heroku": "^7.68.2"
   }
+}
