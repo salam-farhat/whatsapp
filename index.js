@@ -1,52 +1,56 @@
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const app = express();
 const axios = require("axios");
 const cheerio = require("cheerio");
-const { MessagingResponse } = require('twilio').twiml;
+const { MessagingResponse } = require("twilio").twiml;
 
-// create application/json parser
-var jsonParser = bodyParser.json()
- 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(urlencodedParser);
 
-app.use(urlencodedParser)
+let getContestMessage = async (formUrl) => {
+  let response = await axios.get(formUrl);
+  const $ = cheerio.load(response.data);
+  const ogTitle = $('meta[property="og:title"]').attr("content");
+  const ogDescription = $('meta[property="og:description"]').attr("content");
+  const result = `📖  ${ogTitle} 📖
 
-app.get("/generate/:formUrl", (req, res) => {
-  axios
-    .get(req.params.formUrl)
-    .then((response) => {
-      const $ = cheerio.load(response.data);
-      const ogTitle = $('meta[property="og:title"]').attr("content");
-      const ogDescription = $('meta[property="og:description"]').attr(
-        "content"
-      );
-      const result = `📖  ${ogTitle} 📖
-
-        ${req.params.formUrl}
+        ${formUrl}
 
 
       🖋   ${ogDescription.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
-      console.log(result);
-      res.send(result);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  return result;
+};
+
+app.get("/generate/:formUrl", async (req, res) => {
+  try {
+    res.send(await getContestMessage(req.params.formUrl));
+  } catch (e) {
+    res.send("Invalid FormUrl").status(400);
+    console.log(e);
+  }
 });
 
 app.post("/", async (req, res) => {
   console.log(req.body);
-
   let message;
 
-  message = new MessagingResponse().message('Send us an image!');
+  try {
+    if (!req.body || !req.body.Body) {
+      throw "empty body";
+    }
+    message = new MessagingResponse().message(
+      await getContestMessage(req.params.formUrl)
+    );
+  } catch (e) {
+    message = new MessagingResponse().message("Invalid Google Forms Link");
+  }
 
-  res.set('Content-Type', 'text/xml');
+  res.set("Content-Type", "text/xml");
   res.send(message.toString()).status(200);
-  //console.log(message.toString());
+  console.log(message.toString());
 });
 
 const port = process.env.PORT || 3005;
