@@ -20,7 +20,6 @@ let getContestMessage = async (formUrl) => {
 
 ${formUrl}
 
-
 🖋 ${ogDescription.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
   return result;
 };
