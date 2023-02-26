@@ -23,13 +23,11 @@ let getContestMessage = async (formUrl) => {
     description = descriptionArray[0] + " " + descriptionArray[1];
   }
 
-  const result =
-`📖  ${ogTitle} 📖
+  const result = `📖  ${ogTitle} 📖
 
 ${formUrl}
 
 🖋 ${description.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
-  console.log(result);
   return result;
 };
 
