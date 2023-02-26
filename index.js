@@ -42,10 +42,11 @@ app.post("/", async (req, res) => {
       throw "empty body";
     }
     message = new MessagingResponse().message(
-      await getContestMessage(req.params.formUrl)
+      await getContestMessage(req.body.Body)
     );
   } catch (e) {
     message = new MessagingResponse().message("Invalid Google Forms Link");
+    console.log(e);
   }
 
   res.set("Content-Type", "text/xml");
