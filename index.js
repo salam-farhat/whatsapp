@@ -1,8 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+const bodyParser = require('body-parser')
 const app = express();
 const axios = require("axios");
 const cheerio = require("cheerio");
+
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get("/generate/:formUrl", (req, res) => {
   axios
@@ -32,12 +39,11 @@ const { MessagingResponse } = require('twilio').twiml;
 const goodBoyUrl = 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?'
   + 'ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
 
-app.post("/", async (req, res) => {
+app.post("/", jsonParser, async (req, res) => {
   const { body } = req;
   console.log(body);
 
   let message;
-  console.log(req);
 
   message = new MessagingResponse().message('Send us an image!');
 
