@@ -15,12 +15,13 @@ let getContestMessage = async (formUrl) => {
   const $ = cheerio.load(response.data);
   const ogTitle = $('meta[property="og:title"]').attr("content");
   const ogDescription = $('meta[property="og:description"]').attr("content");
-  const result = `📖  ${ogTitle} 📖
+  const result =
+`📖  ${ogTitle} 📖
 
-        ${formUrl}
+${formUrl}
 
 
-      🖋 ${ogDescription.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
+🖋 ${ogDescription.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
   return result;
 };
 
