@@ -46,6 +46,8 @@ app.post("/", (req, res) => {
 
   res.set('Content-Type', 'text/xml');
   res.send(message.toString()).status(200);
+  console.log("Twilio message");
+  console.log(message.toString());
 });
 
 const port = process.env.PORT || 3005;
