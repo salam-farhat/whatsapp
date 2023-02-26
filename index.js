@@ -15,14 +15,25 @@ let getContestMessage = async (formUrl) => {
   const $ = cheerio.load(response.data);
   const ogTitle = $('meta[property="og:title"]').attr("content");
   const ogDescription = $('meta[property="og:description"]').attr("content");
+  let descriptionArray = ogDescription.split("\n");
+  let description;
+  if (isNaN(parseInt(descriptionArray[1].charAt(0)))) {
+    description = descriptionArray[0];
+  } else {
+    description = descriptionArray[0] + " " + descriptionArray[1];
+  }
+
   const result =
 `📖  ${ogTitle} 📖
 
 ${formUrl}
 
-🖋 ${ogDescription.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
+🖋 ${description.replace(/(\r\n|\n|\r)/gm, " ")} 🖋 `;
+  console.log(result);
   return result;
 };
+
+getContestMessage("https://forms.gle/jsmV8iPMvB9LQhtB6");
 
 app.get("/generate/:formUrl", async (req, res) => {
   try {
